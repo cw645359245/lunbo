@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<meta name = "viewport" content = "width = device-width, initial-scale = 1.0, maximum-scale = 1.0,user-scalable = 0" />
+</head>
+<style>
+	body{
+		margin: 0;
+		font-size: 0;
+	}
+
+	.warp-box{
+		/*width: 100%;*/
+		overflow: hidden;
+	}
+	.warp{
+		height: auto;
+	}
+   .warp .img{
+   	   height: auto;
+   	   float: left;
+   }
+    .img img{
+		width: 100%;
+		border:0;
+    }
+
+
+
+</style>
+<body>
+	<div class="warp-box">
+		<div class="warp">
+			<div class="img">
+				<img src="t01c2bdb5ac6c459534 (1).webp" alt="">
+			</div>
+			<div class="img">
+				<img src="t01eb1a3919f66a94b3.webp" alt="">
+			</div>
+			<div class="img">
+				<img src="t0159d5be2dbe5ce809.webp" alt="">
+			</div>
+			<div class="img">
+				<img src="t01c2bdb5ac6c459534 (1).webp" alt="">
+			</div>
+		</div>
+	</div>
+
+	<script>
+	var cw=document.documentElement.clientWidth;
+    var warp=document.querySelector(".warp");
+    var imgs=document.querySelectorAll(".img");
+    warp.style.width=cw*imgs.length+"px";
+    for(var i=0;i<imgs.length;i++){
+    	
+    	imgs[i].style.width=cw+"px";
+    }
+  
+    var index=0;
+ 	 var t=setInterval(mo,3000);
+   function mo(){
+   	   index++;
+   	   if(index==imgs.length){
+   	   	index=0;
+   	   }
+   	   warp.style.transition="transform 0.3s";
+   	   warp.style.transform="translate3d("+(-index*cw)+"px,0,0)";
+  
+   }
+   warp.addEventListener("touchstart",function(){
+   	   clearInterval(t);
+   })
+      warp.addEventListener("touchend",function(){
+   	  t=setInterval(mo,3000);
+   })
+
+
+
+    warp.addEventListener("touchstart",function(e){
+    	
+    	this.style.transition="";
+    	var th=e.targetTouches[0].clientX;
+    	var tm=e.timeStamp;
+    	  var mf=0;
+    	  var em=0;
+    	// console.log(tm)
+    		function move(e){
+    		mf=e.targetTouches[0].clientX;
+    		warp.style.transform="translate3d("+(mf-th-index*cw)+"px,0,0)"
+    		}
+     	 window.addEventListener("touchmove",move);
+    	
+           function end(e){
+           		// console.log(e)
+           				
+           		em=e.timeStamp;
+           	var k=Math.abs(e.changedTouches[0].clientX-th);
+           		
+           		
+           		if(mf==0){
+           			return;
+           		}
+            // window.removeEventListener("touchmove",move);
+           	if(Math.abs(mf-th)>cw/2||(em-tm<100)&&k>30){
+                 console.log(em-tm)
+           		if(mf-th>0){
+           			index--
+           		}else{
+           			index++;
+           		}
+           		if(index==imgs.length){
+           			index=imgs.length-1;
+           		}else if(index==-1){
+           			index=0;
+           		}
+           		this.style.transition="transform 1s";
+    			this.style.transform="translate3d("+-(index*cw)+"px,0,0)";
+    			
+    		}else{
+    			this.style.transform="translate3d("+-(index*cw)+"px,0,0)";
+    			this.style.transition="transform 1s";
+
+    		}
+    		 // warp.removeEventListener("touchmove",move);
+    		 	
+    		warp.removeEventListener("touchend",end)
+           }
+    		warp.addEventListener("touchend",end);
+    		
+    	
+    })
+
+
+ 
+
+
+
+
+
+
+
+	</script>
+</body>
+</html>
